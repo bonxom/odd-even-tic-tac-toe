@@ -52,7 +52,7 @@
         if (cntEven == 5) return 'even';
         return null;
     }
-    
+
     server.on("listening", () => console.log("WS listening on :8082"));
     server.on("error", (e) => console.error("WSS error:", e));
 
@@ -74,7 +74,7 @@
 
                     if (sockets.size == 2) {
                         for (const wss of sockets.keys()){
-                            ws.send(JSON.stringify({
+                            wss.send(JSON.stringify({
                                 type: 'fight',
                             }))
                         }
