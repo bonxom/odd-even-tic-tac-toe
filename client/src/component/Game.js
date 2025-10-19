@@ -28,7 +28,7 @@ function Game(){
         };
 
         ws.onmessage = (event) => {
-            const {type, data} = JSON.parse(event.data);
+            const { type, data } = JSON.parse(event.data);
 
             switch (type){
                 case 'start':
@@ -56,6 +56,7 @@ function Game(){
     }, []);
 
     const handleClick = (index) => {
+        console.log(isStart + ' and ' + winner);
         if (!isStart || winner) return;
 
         let tmpBoard = [...board];
