@@ -37,9 +37,10 @@ function Game(){
                     playerRef.current = data.player;
                     break;
                 case 'fight':
-                    setIsStart(true);
+                    setIsStart(data.isStart);
                     break;
-                case 'display':
+                case 'update':
+                    console.log(data);
                     setBoard(data.board);
                     setWinner(data.winner);
                     break;
@@ -60,21 +61,26 @@ function Game(){
         if (!isStart || winner) return;
 
         let tmpBoard = [...board];
-        tmpBoard[index]++;
+        // tmpBoard[index]++;
         
         setBoard(tmpBoard);
-
         wsRef.current.send(JSON.stringify({
-            type: 'move',
+            type: 'increasement',
             data: {
-                board : tmpBoard,
+                board: tmpBoard,
+                square: index,
             }
         }))
     }
 
     return(
         <div className="main">
-            <h2>{winner ? ("Winner is " + winner) : "N/A"}</h2>
+            <h2>{
+                (isStart || player == null) ? 
+                    ((winner) ? ("Winner is " + winner) : "Game start!")
+                    : ("Not start")
+            }
+            </h2>
             <div className="game">
                 <span className="player">{
                     (!player) ? 

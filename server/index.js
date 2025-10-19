@@ -72,22 +72,28 @@
                         },
                     }));
 
-                    if (sockets.size == 2) {
-                        for (const wss of sockets.keys()){
-                            wss.send(JSON.stringify({
-                                type: 'fight',
-                            }))
-                        }
+                    for (const wss of sockets.keys()){
+                        wss.send(JSON.stringify({
+                            type: 'fight',
+                            data: {
+                                isStart: (sockets.size >= 2)
+                            }
+                        }))
                     }
                     break;
-                case ('move') :
-                    ws.send(JSON.stringify({
-                        type: 'display',
-                        data: {
-                            player: assignPlayer(ws),
-                            winner: handleWinner(data.board)
-                        }
-                    }))
+                case ('increasement'):
+                    const tmpBoard = data.board;
+                    tmpBoard[data.square] += 1;
+                    
+                    server.clients.forEach((socket) => {
+                        socket.send(JSON.stringify({
+                            type: 'update',
+                            data: {
+                                board: tmpBoard,   
+                                winner: handleWinner(tmpBoard) 
+                            }      
+                        }))
+                    })
                     break;
                 default:
                     break;
